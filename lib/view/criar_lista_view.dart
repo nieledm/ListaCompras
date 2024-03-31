@@ -25,7 +25,7 @@ class _CriarListaViewState extends State<CriarListaView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cadastro'),
+        title: Text('Listas de compras'),
       ),
       body: Padding(
         padding: EdgeInsets.all(50),
@@ -93,9 +93,9 @@ class _CriarListaViewState extends State<CriarListaView> {
                   SizedBox(width: 20),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(37, 28, 23, 0),
-                      foregroundColor: Color.fromARGB(255, 253, 253, 253),
-                    ),
+                        backgroundColor: Color.fromARGB(37, 28, 23, 0),
+                        foregroundColor: Color.fromARGB(255, 253, 253, 253),
+                        maximumSize: Size(110, 40)),
                     onPressed: () {
                       if (formKey.currentState!.validate()) {
                         // Implemente a lógica de cadastro aqui

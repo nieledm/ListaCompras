@@ -132,7 +132,7 @@ class _PrincipalViewState extends State<PrincipalView> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color.fromARGB(37, 28, 23, 0),
                     foregroundColor: Color.fromARGB(255, 253, 253, 253),
-                    minimumSize: Size(200, 40),
+                    minimumSize: Size(150, 55),
                   ),
                   onPressed: () {
                     //
