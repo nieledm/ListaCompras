@@ -109,7 +109,6 @@ class _PrincipalViewState extends State<PrincipalView> {
                   // Validação
                   //
 
-                  /*#########################################################
                   validator: (value) {
                     if (value == null) {
                       return 'Informe uma senha válida';
@@ -119,7 +118,6 @@ class _PrincipalViewState extends State<PrincipalView> {
                     //RETORNAR NULL SIGNIFICA QUE O CAMPO FOI VALIDADO COM SUCESSO
                     return null;
                   },
-                  #########################################################*/
                 ),
 
                 SizedBox(height: 30),
@@ -135,39 +133,15 @@ class _PrincipalViewState extends State<PrincipalView> {
                     minimumSize: Size(150, 55),
                   ),
                   onPressed: () {
-                    //
                     // CHAMAR OS VALIDADORES
-                    //
-                    /*#########################################################
-                    ###########################################################*/
 
-                    // Retornar o ifif (formKey.currentState!.validate()) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => CriarListaView()),
-                    );
-                    // OS CAMPOS FORAM VALIDADOS
-
-                    /*
-                      //Recuperar as informações dos campos de texto
-
-                      setState(() {
-                        //Retornar o conteúdo do campo Valor 1
-                        double v1 = double.parse(txtValor1.text);
-                        //Retornar o conteúdo do campo Valor 2
-                        double v2 = double.parse(txtValor2.text);
-                        double resultado = v1 + v2;
-
-                        //exibir resultado
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Resultado: $resultado'),
-                            duration: Duration(seconds: 3),
-                          ),
-                        );
-                      });
-                      */
-                    // Retornar o if}
+                    if (formKey.currentState!.validate()) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => CriarListaView()),
+                      );
+                    }
                   },
                   child: Text('Login', style: TextStyle(fontSize: 18)),
                 ),

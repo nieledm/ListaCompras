@@ -28,21 +28,44 @@ class _CriarListaViewState extends State<CriarListaView> {
         title: Text('Listas de compras'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(50),
-        child: Form(
-          key: formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Image.asset(
-                'lib/imagens/ListaCompras3.PNG',
-                width: 80,
-                height: 200,
+        padding: EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Image.asset(
+              'lib/imagens/ListaCompras3.PNG',
+              height: 150,
+              fit: BoxFit.contain,
+            ),
+            SizedBox(height: 20),
+            Text(
+              'Listas',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 20),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.white, // Fundo branco
+                border: Border.all(
+                    color: Colors.grey.withOpacity(0.5)), // Borda cinza claro
               ),
-              SizedBox(height: 20),
-              DropdownButton<String>(
+              child: DropdownButton<String>(
                 value: dropdownValue,
+                icon: Icon(Icons.arrow_drop_down),
+                iconSize: 36,
+                elevation: 0, // Sem sombra
+                isExpanded: true, // Ocupa toda a largura disponível
+                style: TextStyle(
+                  color: Colors.black, // Texto preto
+                  fontSize: 18,
+                ),
+                underline: Container(
+                  height: 2,
+                  color: Colors.transparent,
+                ),
                 onChanged: (String? newValue) {
                   setState(() {
                     dropdownValue = newValue!;
@@ -59,74 +82,82 @@ class _CriarListaViewState extends State<CriarListaView> {
                     listaDeOpcoes.map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
-                    child: Text(value),
+                    child: Text(
+                      value,
+                      style: TextStyle(
+                        backgroundColor: Colors.white, // Fundo branco
+                      ),
+                    ),
                   );
                 }).toList(),
               ),
-              Spacer(),
-              SizedBox(height: 20),
-              Text(
-                'Deseja cadastrar uma nova lista de compras?',
-                style: TextStyle(fontSize: 18),
-              ),
-              SizedBox(height: 20),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      controller: txtValor1,
-                      style: TextStyle(fontSize: 18),
-                      decoration: InputDecoration(
-                        labelText: 'Nome da nova lista de compras',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Informe o nome de uma nova lista';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                  SizedBox(width: 20),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromARGB(37, 28, 23, 0),
-                        foregroundColor: Color.fromARGB(255, 253, 253, 253),
-                        maximumSize: Size(110, 40)),
-                    onPressed: () {
-                      if (formKey.currentState!.validate()) {
-                        // Implemente a lógica de cadastro aqui
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Lista cadastrada com sucesso!'),
-                          ),
-                        );
-                        // Limpar o campo de texto
-                        txtValor1.clear();
-                      }
-                    },
-                    child: Text('Cadastrar'),
-                  ),
-                ],
-              ),
-              Spacer(),
-              SizedBox(width: 20), // Espaçamento entre os botões
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(37, 28, 23, 0),
-                  foregroundColor: Color.fromARGB(255, 253, 253, 253),
+            ),
+            SizedBox(height: 80),
+            Text(
+              'Cadastrar nova lista de compras',
+              style: TextStyle(fontSize: 18),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 10),
+            TextFormField(
+              controller: txtValor1,
+              style: TextStyle(fontSize: 18),
+              decoration: InputDecoration(
+                labelText: 'Nome da nova lista de compras',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
                 ),
-                onPressed: () {
-                  // VOLTAR PARA A TELA 1
-                  Navigator.pop(context);
-                },
-                child: Text('Voltar'),
               ),
-            ],
-          ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Informe o nome de uma nova lista';
+                }
+                return null;
+              },
+            ),
+            SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {
+                if (formKey.currentState!.validate()) {
+                  // Implemente a lógica de cadastro aqui
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Lista cadastrada com sucesso!'),
+                      duration:
+                          Duration(seconds: 2), // Defina a duração do SnackBar
+                      action: SnackBarAction(
+                        label: 'Desfazer', // Exemplo de ação para desfazer
+                        onPressed: () {
+                          // Implemente a lógica para desfazer aqui
+                        },
+                      ),
+                    ),
+                  );
+
+                  // Limpar o campo de texto
+                  txtValor1.clear();
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color.fromARGB(37, 28, 23, 0),
+                foregroundColor: Color.fromARGB(255, 253, 253, 253),
+                minimumSize: Size(150, 55),
+              ),
+              child: Text('Cadastrar'),
+            ),
+            SizedBox(height: 80),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context); // Fecha a tela atual
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color.fromARGB(37, 28, 23, 0),
+                foregroundColor: Color.fromARGB(255, 253, 253, 253),
+                minimumSize: Size(150, 55),
+              ),
+              child: Text('Sair'),
+            ),
+          ],
         ),
       ),
     );
