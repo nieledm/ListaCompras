@@ -13,10 +13,13 @@ class _CriarListaViewState extends State<CriarListaView> {
   final TextEditingController txtValor1 = TextEditingController();
 
   // Lista de opções para o dropdown
-  final List<String> listaDeOpcoes = ['Lista 1', 'Lista 2', 'Lista 3'];
+  List<String> listaDeOpcoes = ['Lista 1', 'Lista 2', 'Lista 3'];
 
   // Valor selecionado no dropdown
   String dropdownValue = 'Lista 1';
+
+  // Lista temporária para armazenar as listas cadastradas
+  List<String> listasCadastradas = [];
 
   // Chave global para o formulário
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -99,38 +102,42 @@ class _CriarListaViewState extends State<CriarListaView> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 10),
-            TextFormField(
-              controller: txtValor1,
-              style: TextStyle(fontSize: 18),
-              decoration: InputDecoration(
-                labelText: 'Nome da nova lista de compras',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20.0),
+            Form(
+              key: formKey,
+              child: TextFormField(
+                controller: txtValor1,
+                style: TextStyle(fontSize: 18),
+                decoration: InputDecoration(
+                  labelText: 'Nome da nova lista de compras',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Informe o nome de uma nova lista';
+                  }
+                  return null;
+                },
               ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Informe o nome de uma nova lista';
-                }
-                return null;
-              },
             ),
             SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
                 if (formKey.currentState!.validate()) {
-                  // Implemente a lógica de cadastro aqui
+                  // Adiciona o nome da nova lista à lista temporária
+                  listasCadastradas.add(txtValor1.text);
+
+                  // Atualiza a lista de opções do dropdown
+                  setState(() {
+                    listaDeOpcoes.add(txtValor1.text);
+                    dropdownValue = txtValor1.text;
+                  });
+
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Lista cadastrada com sucesso!'),
-                      duration:
-                          Duration(seconds: 2), // Defina a duração do SnackBar
-                      action: SnackBarAction(
-                        label: 'Desfazer', // Exemplo de ação para desfazer
-                        onPressed: () {
-                          // Implemente a lógica para desfazer aqui
-                        },
-                      ),
+                      duration: Duration(seconds: 2),
                     ),
                   );
 

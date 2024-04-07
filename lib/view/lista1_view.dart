@@ -88,94 +88,15 @@ class _Lista1ViewState extends State<Lista1View> {
               ],
             ),
             SizedBox(height: 20),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  flex: 4,
-                  child: TextFormField(
-                    controller: nomeController,
-                    decoration: InputDecoration(
-                      labelText: 'Item',
-                      labelStyle:
-                          TextStyle(fontSize: 14), // Tamanho da fonte ajustado
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 10),
-                Expanded(
-                  flex: 1,
-                  child: TextFormField(
-                    controller: quantidadeController,
-                    decoration: InputDecoration(
-                      labelText: 'Qtd',
-                      labelStyle:
-                          TextStyle(fontSize: 14), // Tamanho da fonte ajustado
-                      border: OutlineInputBorder(),
-                    ),
-                    keyboardType: TextInputType.number,
-                  ),
-                ),
-                SizedBox(width: 10),
-                Expanded(
-                  flex: 1,
-                  child: TextFormField(
-                    controller: unidadeController,
-                    decoration: InputDecoration(
-                      labelText: 'Uni',
-                      labelStyle:
-                          TextStyle(fontSize: 14), // Tamanho da fonte ajustado
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    // Verifica se o campo de nome está vazio
-                    if (nomeController.text.isEmpty) {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text('Erro'),
-                            content:
-                                Text('Por favor, insira um nome para o item.'),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text('OK'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    } else {
-                      // Adicione aqui a lógica para adicionar o item à lista
-                      String nome = nomeController.text;
-                      double quantidade =
-                          double.tryParse(quantidadeController.text) ?? 0.0;
-                      String unidade = unidadeController.text;
-                      setState(() {
-                        dados.add(ListaCompras(nome, quantidade, unidade));
-                      });
-                      nomeController.clear();
-                      quantidadeController.clear();
-                      unidadeController.clear();
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    shape: CircleBorder(),
-                    padding: EdgeInsets.all(10),
-                    backgroundColor: Color.fromARGB(37, 28, 23, 0),
-                    foregroundColor: Color.fromARGB(255, 253, 253, 253),
-                  ),
-                  child: Icon(Icons.add),
-                ),
-              ],
+            ElevatedButton(
+              onPressed: () {
+                _adicionarItem(context);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color.fromARGB(37, 28, 23, 0),
+                foregroundColor: Color.fromARGB(255, 253, 253, 253),
+              ),
+              child: Text('Adicionar Item'),
             ),
             SizedBox(height: 20),
             Expanded(
@@ -202,7 +123,7 @@ class _Lista1ViewState extends State<Lista1View> {
                             dados.removeAt(index);
                           });
                         }
-                        // Adicione aqui a lógica para editar o item
+                        // ELSE = LÓGICA PARA EDITAR ITEM
                       },
                       itemBuilder: (BuildContext context) =>
                           <PopupMenuEntry<String>>[
@@ -223,7 +144,7 @@ class _Lista1ViewState extends State<Lista1View> {
                       ],
                     ),
                     onTap: () {
-                      // Adicione aqui a lógica para selecionar o item ao ser clicado
+                      // lógica para selecionar o item ao ser clicado
                     },
                   );
                 },
@@ -248,4 +169,164 @@ class _Lista1ViewState extends State<Lista1View> {
       ),
     );
   }
+
+/*#######################################################
+ADICIONAR ITEM
+#######################################################*/
+  void _adicionarItem(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Adicionar Item',
+            style: TextStyle(color: Colors.black),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                controller: nomeController,
+                decoration: InputDecoration(
+                  labelText: 'Item',
+                  labelStyle: TextStyle(color: Colors.black),
+                ),
+              ),
+              TextFormField(
+                controller: quantidadeController,
+                decoration: InputDecoration(
+                  labelText: 'Quantidade',
+                  labelStyle: TextStyle(color: Colors.black),
+                ),
+                keyboardType: TextInputType.number,
+              ),
+              TextFormField(
+                controller: unidadeController,
+                decoration: InputDecoration(
+                  labelText: 'Unidade',
+                  labelStyle: TextStyle(color: Colors.black),
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.grey,
+                foregroundColor: Colors.white,
+              ),
+              child: Text('Cancelar'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                // Adicione aqui a lógica para adicionar o item à lista
+                String nome = nomeController.text;
+                double quantidade =
+                    double.tryParse(quantidadeController.text) ?? 0.0;
+                String unidade = unidadeController.text;
+                setState(() {
+                  dados.add(ListaCompras(nome, quantidade, unidade));
+                });
+                nomeController.clear();
+                quantidadeController.clear();
+                unidadeController.clear();
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color.fromARGB(37, 28, 23, 0),
+                foregroundColor: Color.fromARGB(255, 253, 253, 253),
+              ),
+              child: Text('Adicionar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
+
+/*#######################################################
+EDITAR ITEM
+#######################################################*/
+/*
+void _editarItem(BuildContext context, ListaCompras item) {
+  TextEditingController nomeController = TextEditingController();
+  TextEditingController quantidadeController = TextEditingController();
+  TextEditingController unidadeController = TextEditingController();
+
+  nomeController.text = item.item;
+  quantidadeController.text = item.quantidade.toString();
+  unidadeController.text = item.medida;
+
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(
+          'Editar Item',
+          style: TextStyle(color: Colors.black), // Cor preta para o título
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextFormField(
+              controller: nomeController,
+              decoration: InputDecoration(
+                labelText: 'Item',
+                labelStyle: TextStyle(color: Colors.black), // Cor preta para o label
+              ),
+            ),
+            TextFormField(
+              controller: quantidadeController,
+              decoration: InputDecoration(
+                labelText: 'Quantidade',
+                labelStyle: TextStyle(color: Colors.black), // Cor preta para o label
+              ),
+              keyboardType: TextInputType.number,
+            ),
+            TextFormField(
+              controller: unidadeController,
+              decoration: InputDecoration(
+                labelText: 'Unidade',
+                labelStyle: TextStyle(color: Colors.black), // Cor preta para o label
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.grey,
+              foregroundColor: Colors.white,
+            ),
+            child: Text('Cancelar'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              // Atualiza os detalhes do item na lista
+              setState(() {
+                item.item = nomeController.text;
+                item.quantidade = double.tryParse(quantidadeController.text) ?? 0.0;
+                item.medida = unidadeController.text;
+              });
+              Navigator.of(context).pop();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color.fromARGB(37, 28, 23, 0),
+              foregroundColor: Color.fromARGB(255, 253, 253, 253),
+            ),
+            child: Text('Salvar'),
+          ),
+        ],
+      );
+    },
+  );
+}
+*/
+
